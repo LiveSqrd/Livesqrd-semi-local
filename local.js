@@ -1,23 +1,4 @@
-/*
-	{
-	  "name": "local.js",
-	  "version": "1.0.0",
-	  "private": true,
-	  "author": "Pasha Riger",
-	  "scripts": {
-	    "start": "node local.js",
-	    "dev": "node local.js"
-	  },
-	  "dependencies": {
-	    "express": "3.1.0",
-	    "jade": ">=1.1.5",
-	    "less-middleware": "latest",
-	    "underscore": "latest"
-	  }
-	}
-*/
-
-var	_ 				= require('underscore')
+var	_ 			= require('underscore')
 	, path 			= require('path')
 	, fs 			= require('fs')
 	, express		= require('express')
