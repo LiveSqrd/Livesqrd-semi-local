@@ -16,5 +16,10 @@
     "less-middleware": "latest",
     "underscore": "latest",
     "commander":"latest"
-  }
+  },
+ "repository": {
+    "type": "git",
+    "url": "git://github.com/livesqrd/lsq-local"
+  },
+"homepage": "https://github.com/livesqrd/lsq-local",
 }
