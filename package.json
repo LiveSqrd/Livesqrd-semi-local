@@ -1,7 +1,6 @@
 {
   "name": "local.js",
   "version": "1.0.1",
-  "private": true,
   "author": "Live Sqrd",
   "scripts": {
     "start": "lsq-local",
