@@ -1,12 +1,34 @@
 var	 _ 			= require('underscore')
-		, path 			= require('path')
-		, fs 			= require('fs')
-		, express		= require('express')
-		, http 			= require('http')
-		, https 		= require('https')
-		, lessMiddleware = require('less-middleware')
-		, options = {};
-console.log(process.argv)
+	, path 			= require('path')
+	, fs 			= require('fs')
+	, express		= require('express')
+	, http 			= require('http')
+	, https 		= require('https')
+	, cli 			= require('commander')
+	, lessMiddleware = require('less-middleware')
+	, options = {};
+
+
+
+exports.init = function(){
+	cli.version("0.0.1")
+		.usage('[options] [file ...]')
+		.option("-h, --host <url>","Host name: yourapp.lsq.io")
+		.option("-f, --folder [path]","Folder: current path")
+		.option("-p, --port [port]","Port: 8000",parseInt)
+		.option("-d, --debug ","debug: false")
+		.parse(process.argv);
+	//console.log(cli.host,cli.port,cli)
+	options.port = cli.port || 8000;
+	options.host = cli.host;
+	options.folder = cli.folder || __dirname;
+	options.debug = cli.debug || false;
+	if(_.isString(options.host))
+		exports.run();
+	else 
+		console.log("Missing -h host")
+
+}
 // process.argv.forEach(function (val, index, array) {
 //   if(index == 0 && val=="node")
 //   	console.log(node)
@@ -17,21 +39,24 @@ exports.console = function(){
 	if(options.debug)
 		console.log(arguments)
 }
-exports.run = function(options){
+exports.run = function(){
  
-		
-
+//	console.log(options)
+//	console.log(path.join(__dirname,options.folder, '/org'),path.join(__dirname, '/org'))
 	var app = express();
 
 	/* choose which domain we are emulating */
 	var mainHOST = options.host;
+	app.configure(function(){
+		app.set('port', options.port || 8000);
+		app.set('views', path.join(__dirname,options.folder, '/org'));
+		app.set('view engine', "jade");
+		app.set('view options', { layout: false });
 
-	app.set('port', options.port || 80 );
+	});
 	app.use(express.bodyParser());
-	app.use(lessMiddleware(path.join(__dirname, '/org')));
-	app.use(express.static(__dirname + '/org'));
-	app.set('views', __dirname + '/org/jade');
-	app.set('view engine', 'jade');
+	app.use(lessMiddleware(path.join(__dirname,options.folder, '/org')));
+	app.use(express.static(path.join(__dirname, options.folder ,'/org')));
 
 	app.get(/^\/jade\/*/,function(req,res){
 		var url = req.url;
@@ -43,7 +68,7 @@ exports.run = function(options){
 	})
 
 	app.get(/.media\/get/, function(req, res){
-		console.log("forwarding MEDIA GET "+req.originalUrl);
+		exports.console("forwarding MEDIA GET ",req.originalUrl);
 		var request = https.request({
 		  hostname: mainHOST,
 		  port: 443,
@@ -111,8 +136,8 @@ exports.run = function(options){
 	});
 
 	app.listen(app.get('port') || 80);
-	console.log('Running LSQ Local.')
+	console.log("Running LSQ Local",options.host ,"on port",options.port)
 
 }
 
-exports.run({host:"www.lsq.io",port:8000})
+//exports.run({host:"www.lsq.io",port:8000})
