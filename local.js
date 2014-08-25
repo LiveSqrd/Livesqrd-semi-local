@@ -6,16 +6,19 @@ var	 _ 			= require('underscore')
 		, https 		= require('https')
 		, lessMiddleware = require('less-middleware')
 		, options = {};
+console.log(process.argv)
+// process.argv.forEach(function (val, index, array) {
+//   if(index == 0 && val=="node")
+//   	console.log(node)
+//   console.log(index + ': ' + val);
 
-process.argv.forEach(function (val, index, array) {
-  console.log(index + ': ' + val);
-});
+// });
 exports.console = function(){
 	if(options.debug)
 		console.log(arguments)
 }
 exports.run = function(options){
-
+ 
 		
 
 	var app = express();
@@ -59,7 +62,7 @@ exports.run = function(options){
 	});
 
 	app.get(/.*/, function(req, res){
-		console.log("forwarding GET "+req.originalUrl);
+		exports.console("forwarding GET "+req.originalUrl);
 		var headers = req.headers;
 		headers.host = mainHOST;
 		delete headers["accept-encoding"];
@@ -83,7 +86,7 @@ exports.run = function(options){
 	});
 
 	app.post(/.*/, function(req, res){
-		console.log("forwarding POST "+req.originalUrl,headers);
+		exports.console("forwarding POST "+req.originalUrl,headers);
 		var headers = req.headers;
 		delete headers["accept-encoding"];
 		headers.host = mainHOST;
