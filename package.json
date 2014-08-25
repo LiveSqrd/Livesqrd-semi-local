@@ -5,7 +5,7 @@
   "bin":{
     "lsq-local":"index.js"
   },
-  "main": "./index.js",
+  "main": "./cli.js",
   "scripts": {
     "start": "lsq-local",
     "dev": "node local.js"
