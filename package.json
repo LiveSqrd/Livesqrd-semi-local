@@ -1,10 +1,11 @@
 {
   "name": "lsq-local",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "author": "Live Sqrd",
   "bin":{
     "lsq-local":".bin/lsq-local"
   },
+  "main": "./index.js",
   "scripts": {
     "start": "lsq-local",
     "dev": "node local.js"
