@@ -1,6 +1,6 @@
 {
   "name": "lsq-local",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Live Sqrd",
   "bin":{
     "lsq-local":".bin/lsq-local"
