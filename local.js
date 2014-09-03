@@ -44,8 +44,6 @@ exports.run = function(){
 //	console.log(path.join(__dirname, '/org'),path.join(__dirname, '/org'))
 	var app = express();
 
-	/* choose which domain we are emulating */
-	var mainHOST = options.host;
 	app.configure(function(){
 		app.set('port', options.port || 8000);
 		app.set('views', path.join(__dirname, '/org'));
@@ -69,7 +67,7 @@ exports.run = function(){
 	app.get(/.media\/get/, function(req, res){
 		exports.console("forwarding MEDIA GET ",req.originalUrl);
 		var request = https.request({
-		  hostname: mainHOST,
+		  hostname: options.host,
 		  port: 443,
 		  path: req.originalUrl,
 		  method: 'GET'
@@ -88,11 +86,11 @@ exports.run = function(){
 	app.get(/.*/, function(req, res){
 		exports.console("forwarding GET "+req.originalUrl);
 		var headers = req.headers;
-		headers.host = mainHOST;
+		headers.host = options.host;
 		delete headers["accept-encoding"];
 		var buff = ""
 		var request = https.request({
-		  hostname: mainHOST,
+		  hostname: options.host,
 		  port: 443,
 		  path: req.originalUrl,
 		  method: 'GET',
@@ -113,10 +111,10 @@ exports.run = function(){
 		exports.console("forwarding POST "+req.originalUrl,headers);
 		var headers = req.headers;
 		delete headers["accept-encoding"];
-		headers.host = mainHOST;
+		headers.host = options.host;
 		var buff = ""
 		var request = https.request({
-		  hostname: mainHOST,
+		  hostname: options.host,
 		  port: 443,
 		  path: req.originalUrl,
 		  method: 'POST',
